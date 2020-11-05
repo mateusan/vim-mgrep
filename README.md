@@ -9,11 +9,11 @@ Vim Plugin: Search across multiples files
 Grep terms using `git grep`
 
 ```
-	:MGrepGit <search_terms>
+:MGrepGit <search_terms>
 ```
 
 Grep terms using `grep tool`
 
 ```
-  :MGrepSys
+ :MGrepSys
 ```
