@@ -6,7 +6,7 @@ Vim Plugin: Search across multiples files
 
 with vim-plug:
 ```vim
-Plug 'mateusan/vim-mgrep'
+Plug 'mateusan/vim-mgrep', { 'branch': 'main' }
 ```
 
 ## Usage ##
