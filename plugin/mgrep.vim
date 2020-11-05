@@ -214,6 +214,6 @@ hi def link MGrepWindowTabColor PmenuSbar
 hi def link MGrepWindowTabColorCur PmenuThumb
 
 command -nargs=* MGrepGit :call s:MGrepRun(<f-args>, 'git' )
-command -nargs=0 MGrepGitWord :call s:MGrepRun(<cword>, 'git' )
+command -nargs=0 MGrepGitWord :call s:MGrepRun(expand("<cword>"), 'git' )
 command -nargs=* MGrepSys :call s:MGrepRun(<f-args>, 'system' )
-command -nargs=0 MGrepSysWord :call s:MGrepRun(<cword>, 'system' )
+command -nargs=0 MGrepSysWord :call s:MGrepRun(expand("<cword>", 'system' )
