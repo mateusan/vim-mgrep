@@ -1,9 +1,9 @@
 " File: mgrep.vim
 " Author: Mateu Santandreu <mateusan AT gmail DOT com>
 
-" if exists('g:mgrep_loaded' ) || &cp
-"     finish
-" endif
+if exists('g:mgrep_loaded' ) || &cp
+    finish
+endif
 
 let g:mgrep_loaded = 1
 if !exists( 'g:mgrep_ignorecase' )
