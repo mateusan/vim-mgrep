@@ -187,20 +187,30 @@ function s:MGrepRun(searchTerm, mode)
     let numResults = len(output)
     call MGrep_register_lines(output)
     let prettyOutput = MGrepFormat(output)
-    let winid = popup_menu(prettyOutput, #{
-        \ border: [ 1, 1, 1, 1 ],
-        \ title: ' ::: Results: #' . numResults . ' ::: ',
-        \ pos: "center",
-        \ maxheight: windowHeightSize,
-        \ minwidth: windowWidthSize,
-        \ maxwidth: windowWidthSize,
-        \ callback: "MGrepSelect",
-        \ padding: [ 1, 1, 1, 2 ],
-        \ borderhighlight: [ "MGrepWindowColor" ],
-        \ highlight: "MGrepWindowNormalColor",
-        \ scrollbarhighlight: "MGrepWindowTabColor",
-        \ thumbhighlight: "MGrepWindowTabColorCur",
-        \ })
+
+    if exists('*popup_menu')
+        let winid = popup_menu(prettyOutput, #{
+            \ border: [ 1, 1, 1, 1 ],
+            \ title: ' ::: Results: #' . numResults . ' ::: ',
+            \ pos: "center",
+            \ maxheight: windowHeightSize,
+            \ minwidth: windowWidthSize,
+            \ maxwidth: windowWidthSize,
+            \ callback: "MGrepSelect",
+            \ padding: [ 1, 1, 1, 2 ],
+            \ borderhighlight: [ "MGrepWindowColor" ],
+            \ highlight: "MGrepWindowNormalColor",
+            \ scrollbarhighlight: "MGrepWindowTabColor",
+            \ thumbhighlight: "MGrepWindowTabColorCur",
+            \ })
+    elseif has('nvim') && exists('g:loaded_popup_menu_plugin')
+        " Neovim
+        " " g:loaded_popup_menu_plugin is defined by popup-menu.nvim.
+        call popup_menu#open(prettyOutput, 'MGrepSelect' )
+    else 
+        let index = inputlist(prettyOutput)
+        call MGrepSelect( '', index )
+    endif
 endfunction
 
 
