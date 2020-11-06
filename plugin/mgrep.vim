@@ -183,12 +183,13 @@ function s:MGrepRun(searchTerm, mode)
     let windowHeightSize = float2nr(winheight('%') / 2)
     let windowWidthSize = float2nr(winwidth('%') * 0.80)
 
-    let output = MGrepFormatOutput(lines, a:searchTerm)
-    let numResults = len(output)
-    call MGrep_register_lines(output)
-    let prettyOutput = MGrepFormat(output)
 
     if exists('*popup_menu')
+        let output = MGrepFormatOutput(lines, a:searchTerm)
+        let numResults = len(output)
+        call MGrep_register_lines(output)
+        let prettyOutput = MGrepFormat(output)
+
         let winid = popup_menu(prettyOutput, #{
             \ border: [ 1, 1, 1, 1 ],
             \ title: ' ::: Results: #' . numResults . ' ::: ',
@@ -208,7 +209,7 @@ function s:MGrepRun(searchTerm, mode)
         " " g:loaded_popup_menu_plugin is defined by popup-menu.nvim.
         call popup_menu#open(prettyOutput, 'MGrepSelect' )
     else 
-        let index = inputlist(prettyOutput)
+        let index = inputlist(lines)
         call MGrepSelect( '', index )
     endif
 endfunction
