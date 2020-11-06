@@ -51,7 +51,7 @@ function MGrepSelect(winid, result)
     call MGrep_unregistrer_lines()
 endfunction
 
-function MGrepFormatOutput(lines, search)
+function MGrepFormatDecode(lines, search)
     let allLinesProps = []
     for line in a:lines
         let obj = MGrepFormatAndPropify(line, a:search)
@@ -183,13 +183,12 @@ function s:MGrepRun(searchTerm, mode)
     let windowHeightSize = float2nr(winheight('%') / 2)
     let windowWidthSize = float2nr(winwidth('%') * 0.80)
 
+    let DecodeLines = MGrepFormatDecode(lines, a:searchTerm)
+    let numResults = len(DecodeLines)
+    call MGrep_register_lines(DecodeLines)
 
     if exists('*popup_menu')
-        let output = MGrepFormatOutput(lines, a:searchTerm)
-        let numResults = len(output)
-        call MGrep_register_lines(output)
-        let prettyOutput = MGrepFormat(output)
-
+        let prettyOutput = MGrepFormat(DecodeLines)
         let winid = popup_menu(prettyOutput, #{
             \ border: [ 1, 1, 1, 1 ],
             \ title: ' ::: Results: #' . numResults . ' ::: ',
@@ -204,13 +203,16 @@ function s:MGrepRun(searchTerm, mode)
             \ scrollbarhighlight: "MGrepWindowTabColor",
             \ thumbhighlight: "MGrepWindowTabColorCur",
             \ })
-    elseif has('nvim') && exists('g:loaded_popup_menu_plugin')
-        " Neovim
-        " " g:loaded_popup_menu_plugin is defined by popup-menu.nvim.
-        call popup_menu#open(prettyOutput, 'MGrepSelect' )
     else 
-        let index = inputlist(lines)
-        call MGrepSelect( '', index )
+        let allLines = []
+        let idx = 0
+        for obj in DecodeLines 
+            let idx += 1
+            let line = "[" . idx ."] " . obj.viewStr
+            call add(allLines, line )
+        endfor
+        let idx = inputlist(allLines)
+        call MGrepSelect( '', idx )
     endif
 endfunction
 
