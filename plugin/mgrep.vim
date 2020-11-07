@@ -44,8 +44,8 @@ endfunction
 function MGrepSelect(winid, result)
     if a:result != -1
         let obj = g:mgrep_win_lines[a:result-1]
-        let vimCmd = ":e +" . obj.lineNr . " " . obj.file
-        echo vimCmd
+        let vimCmd = ":e +" . obj.lineNr . " " . obj.file 
+        "echo vimCmd
         execute vimCmd
     endif
     call MGrep_unregistrer_lines()
